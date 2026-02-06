@@ -285,7 +285,7 @@ def process_order(name, email, note, total):
     
     st.markdown("""
     ### Next Steps
-    1. **Payment**: Please Venmo the total amount to **`@TechLab-Parent`** or scan the QR code below.
+    1. **Payment**: Please Venmo the total amount to the QR code below.
        * Include your Order ID in the payment note.
     """)
     
