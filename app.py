@@ -135,7 +135,7 @@ Items Ordered:
 Any questions? Reply to this email!
 
 Thanks,
-TechLab
+Tyler's TechLab 🖨️
     """)
 
     # 3. Email to OWNER
@@ -174,7 +174,7 @@ Total: ${order['total']:.2f}
 # --- Page Functions ---
 
 def show_home():
-    st.title("Welcome to Tyler's TechLab")
+    st.title("Welcome to Tyler's TechLab 🖨️")
     st.write("### Cool 3D Printed Gear by a Teen Maker")
     
     # --- Merged About Section ---
@@ -313,7 +313,7 @@ def main():
     init_state()
     
     # Sidebar Navigation
-    st.sidebar.title("TechLab Navigation")
+    st.sidebar.title("Navigation")
     # Products removed from nav as per request, merged into Home
     # "About" removed from nav as per request, merged into Home
     page = st.sidebar.radio("Go to", ["Home", "Your Order", "Contact"])
