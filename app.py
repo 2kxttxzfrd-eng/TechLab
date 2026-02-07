@@ -5,6 +5,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 import os
+import json # Added json import
 from PIL import Image
 
 # --- Image Conversion Utility ---
@@ -40,36 +41,61 @@ def ensure_images_converted():
 # Run conversion on app startup
 ensure_images_converted()
 
+# --- Persistence Helpers ---
+PRODUCTS_FILE = "products.json"
+
+def load_products():
+    """Load products from a JSON file or return defaults."""
+    if os.path.exists(PRODUCTS_FILE):
+        try:
+            with open(PRODUCTS_FILE, "r") as f:
+                data = json.load(f)
+                # Convert keys back to integers (JSON keys are always strings)
+                return {int(k): v for k, v in data.items()}
+        except Exception as e:
+            print(f"Error loading products: {e}")
+    
+    # Default Initial Inventory (if file doesn't exist)
+    return {
+        1: {
+            "name": "Mug Insert - Light Grey",
+            "price": 10.00,
+            "image": "1. Mug Insert Light Grey.jpg",
+            "description": "Hey! Is your favorite mug too big for your car’s cup holder? This light grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
+            "stock": 2,
+            "sold": 0
+        },
+        2: {
+            "name": "Mug Insert - Dark Grey",
+            "price": 10.00,
+            "image": "2.Mug Insert Dark Grey.jpg",
+            "description": "Hey! Is your favorite mug too big for your car’s cup holder? This dark grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
+            "stock": 2,
+            "sold": 0
+        },
+        3: {
+            "name": "Art Brush Holder",
+            "price": 20.00,
+            "image": "3.BrushHolder.jpeg",
+            "description": "Keep your artistic brushes neat and accessible.",
+            "stock": 1,
+            "sold": 0
+        }
+    }
+
+def save_products(products):
+    """Save current products state to JSON file."""
+    try:
+        with open(PRODUCTS_FILE, "w") as f:
+            json.dump(products, f, indent=4)
+    except Exception as e:
+        print(f"Error saving products: {e}")
+
 # --- Configuration & State Initialization ---
 def init_state():
     if "products" not in st.session_state:
-        # Initial inventory setup
-        st.session_state.products = {
-            1: {
-                "name": "Mug Insert - Light Grey",
-                "price": 10.00,
-                "image": "1. Mug Insert Light Grey.jpg", # Updated to .jpg
-                "description": "Hey! Is your favorite mug too big for your car’s cup holder? This light grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
-                "stock": 2,
-                "sold": 0
-            },
-            2: {
-                "name": "Mug Insert - Dark Grey",
-                "price": 10.00,
-                "image": "2.Mug Insert Dark Grey.jpg", # Updated to .jpg (Note: spaces/dots kept same as logic above)
-                "description": "Hey! Is your favorite mug too big for your car’s cup holder? This dark grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
-                "stock": 2,
-                "sold": 0
-            },
-            3: {
-                "name": "Art Brush Holder",
-                "price": 20.00,
-                "image": "3.BrushHolder.jpeg",
-                "description": "Keep your artistic brushes neat and accessible.",
-                "stock": 1,
-                "sold": 0
-            }
-        }
+        # Load from file instead of hardcoding
+        st.session_state.products = load_products()
     
     if "cart" not in st.session_state:
         st.session_state.cart = {}  # {product_id: quantity}
@@ -260,6 +286,9 @@ def process_order(name, email, note, total):
             # Optionally decrease stock if that's the logic intended, 
             # but request said track stock vs. sold.
             st.session_state.products[p_id]['stock'] -= qty
+
+    # Save updated inventory to file
+    save_products(st.session_state.products)
 
     # Save Order
     new_order = {
