@@ -62,7 +62,7 @@ def load_products():
             "price": 10.00,
             "image": "1. Mug Insert Light Grey.jpg",
             "description": "Hey! Is your favorite mug too big for your car’s cup holder? This light grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
-            "stock": 2,
+            "stock": 5,
             "sold": 1
         },
         2: {
@@ -70,7 +70,7 @@ def load_products():
             "price": 10.00,
             "image": "2.Mug Insert Dark Grey.jpg",
             "description": "Hey! Is your favorite mug too big for your car’s cup holder? This dark grey mug insert is the perfect solution—designed to hold mugs up to 3.5 inches in diameter so you can take your favorite drink on the road. Mug not included.",
-            "stock": 2,
+            "stock": 5,
             "sold": 1
         },
         3: {
@@ -78,7 +78,7 @@ def load_products():
             "price": 20.00,
             "image": "3.BrushHolder.jpeg",
             "description": "Keep your artistic brushes neat and accessible.",
-            "stock": 1,
+            "stock": 5,
             "sold": 0
         }
     }
